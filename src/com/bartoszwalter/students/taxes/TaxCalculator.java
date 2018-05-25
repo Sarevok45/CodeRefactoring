@@ -24,13 +24,13 @@ public class TaxCalculator {
 	public static void main(String[] args) {
 		try {
 			InputStreamReader isr = new InputStreamReader(System.in);
-			BufferedReader br = new BufferedReader(isr);
+			BufferedReader kwotaDochodu = new BufferedReader(isr);
 			
 			System.out.print("Podaj kwotę dochodu: ");	
-			podstawa = Double.parseDouble(br.readLine());
+			podstawa = Double.parseDouble(kwotaDochodu.readLine());
 			
 			System.out.print("Typ umowy: (P)raca, (Z)lecenie: ");
-			umowa = br.readLine().charAt(0);
+			umowa = kwotaDochodu.readLine().charAt(0);
 			
 		} catch (Exception ex) {
 			System.out.println("Błędna kwota");
