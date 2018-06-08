@@ -1,37 +1,43 @@
 package com.bartoszwalter.students.taxes;
 
+import com.bartoszwalter.students.taxes.config.ContractType;
+import com.bartoszwalter.students.taxes.config.WorkParms;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
 public class TaxCalculator {
 	
-	public static double podstawa = 0;
-	public static char umowa = ' ';
+	//public static double podstawa = 0;
+	//public static char umowa = ' ';
 	// składki na ubezpieczenia społeczne
-	public static double s_emerytalna = 0; // 9,76% podstawyy
-	public static double s_rentowa = 0; // 1,5% podstawy
-	public static double u_chorobowe = 0; // 2,45% podstawy
+	public static double skladkaEmerytalna = 0; // 9,76% podstawyy
+	public static double skladkaRentowa = 0; // 1,5% podstawy
+	public static double ubezpieczenieChorobowe = 0; // 2,45% podstawy
 	// składki na ubezpieczenia zdrowotne
 	public static double kosztyUzyskania = 111.25; 
-	public static double s_zdrow1 = 0; // od podstawy wymiaru 9%
-	public static double s_zdrow2 = 0; // od podstawy wymiaru 7,75 %
+	public static double skladkaZdrowotna1 = 0; // od podstawy wymiaru 9%
+	public static double skladkaZdrowotna2 = 0; // od podstawy wymiaru 7,75 %
 	public static double zaliczkaNaPod = 0; // zaliczka na podatek dochodowy 18%
 	public static double kwotaZmiejsz = 46.33; // kwota zmienjszająca podatek 46,33 PLN
 	public static double zaliczkaUS = 0;
+	public static WorkParms workParms = new WorkParms();
 	public static double zaliczkaUS0 = 0;
 
 	public static void main(String[] args) {
 		try {
+
 			InputStreamReader isr = new InputStreamReader(System.in);
 			BufferedReader kwotaDochodu = new BufferedReader(isr);
 			
-			System.out.print("Podaj kwotę dochodu: ");	
-			podstawa = Double.parseDouble(kwotaDochodu.readLine());
+			System.out.print("Podaj kwotę dochodu: ");
+			double kwota = Double.parseDouble(kwotaDochodu.readLine());
 			
 			System.out.print("Typ umowy: (P)raca, (Z)lecenie: ");
-			umowa = kwotaDochodu.readLine().charAt(0);
-			
+			char typ = kwotaDochodu.readLine().charAt(0);
+
+			ustawParametry(kwota, typ);
 		} catch (Exception ex) {
 			System.out.println("Błędna kwota");
 			System.err.println(ex);
@@ -41,22 +47,21 @@ public class TaxCalculator {
 		DecimalFormat df00 = new DecimalFormat("#.00");
 		DecimalFormat df = new DecimalFormat("#");
 		
-		if (umowa == 'P') {
+		if (workParms.getTypUmowy() == ContractType.UMOWA_O_PRACE) {
 			System.out.println("UMOWA O PRACĘ");
-			System.out.println("Podstawa wymiaru składek " + podstawa);
-			double oPodstawa = obliczonaPodstawa(podstawa);
-			System.out.println("Składka na ubezpieczenie emerytalne "
-					+ df00.format(s_emerytalna));
-			System.out.println("Składka na ubezpieczenie rentowe    "
-					+ df00.format(s_rentowa));
-			System.out.println("Składka na ubezpieczenie chorobowe  "
-					+ df00.format(u_chorobowe));
-			System.out
-					.println("Podstawa wymiaru składki na ubezpieczenie zdrowotne: "
+			System.out.println("Podstawa wymiaru składek " + workParms.getPodstawa());
+			double oPodstawa = obliczonaPodstawa(workParms.getPodstawa().doubleValue());
+			System.out.println("Składka na ubezpieczenie emerytalne " + skladkaEmerytalna);
+					/*+ df00.format(skladkaEmerytalna));*/
+			System.out.println("Składka na ubezpieczenie rentowe " + skladkaRentowa);
+//					+ df00.format(skladkaRentowa));
+			System.out.println("Składka na ubezpieczenie chorobowe " + ubezpieczenieChorobowe);
+//					+ df00.format(ubezpieczenieChorobowe));
+			System.out.println("Podstawa wymiaru składki na ubezpieczenie zdrowotne: "
 							+ oPodstawa);
 			obliczUbezpieczenia(oPodstawa);
-			System.out.println("Składka na ubezpieczenie zdrowotne: 9% = "
-					+ df00.format(s_zdrow1) + " 7,75% = " + df00.format(s_zdrow2));
+			System.out.println("Składka na ubezpieczenie zdrowotne: 9% = " + skladkaZdrowotna1
+					/*+ df00.format(skladkaZdrowotna1)*/ + " 7,75% = " + skladkaZdrowotna2 /*+ df00.format(skladkaZdrowotna2)*/);
 			System.out.println("Koszty uzyskania przychodu w stałej wysokości "
 					+ kosztyUzyskania);
 			double podstawaOpodat = oPodstawa - kosztyUzyskania;
@@ -76,28 +81,27 @@ public class TaxCalculator {
 			System.out.println("Zaliczka do urzędu skarbowego = "
 					+ df00.format(zaliczkaUS) + " po zaokrągleniu = "
 					+ df.format(zaliczkaUS0));
-			double wynagrodzenie = podstawa
-					- ((s_emerytalna + s_rentowa + u_chorobowe) + s_zdrow1 + zaliczkaUS0);
+			double wynagrodzenie = workParms.getPodstawa().doubleValue()
+					- ((skladkaEmerytalna + skladkaRentowa + ubezpieczenieChorobowe) + skladkaZdrowotna1 + zaliczkaUS0);
 			System.out.println();
 			System.out
 					.println("Pracownik otrzyma wynagrodzenie netto w wysokości = "
 							+ df00.format(wynagrodzenie));
-		} else if (umowa == 'Z') {
+		} else if (workParms.getTypUmowy() == ContractType.UMOWA_ZLECENIE) {
 			System.out.println("UMOWA-ZLECENIE");
-			System.out.println("Podstawa wymiaru składek " + podstawa);
-			double oPodstawa = obliczonaPodstawa(podstawa);
+			System.out.println("Podstawa wymiaru składek " + workParms.getPodstawa().doubleValue());
+			double oPodstawa = obliczonaPodstawa(workParms.getPodstawa().doubleValue());
 			System.out.println("Składka na ubezpieczenie emerytalne "
-					+ df00.format(s_emerytalna));
+					+ df00.format(skladkaEmerytalna));
 			System.out.println("Składka na ubezpieczenie rentowe    "
-					+ df00.format(s_rentowa));
+					+ df00.format(skladkaRentowa));
 			System.out.println("Składka na ubezpieczenie chorobowe  "
-					+ df00.format(u_chorobowe));
-			System.out
-					.println("Podstawa wymiaru składki na ubezpieczenie zdrowotne: "
+					+ df00.format(ubezpieczenieChorobowe));
+			System.out.println("Podstawa wymiaru składki na ubezpieczenie zdrowotne: "
 							+ oPodstawa);
 			obliczUbezpieczenia(oPodstawa);
 			System.out.println("Składka na ubezpieczenie zdrowotne: 9% = "
-					+ df00.format(s_zdrow1) + " 7,75% = " + df00.format(s_zdrow2));
+					+ df00.format(skladkaZdrowotna1) + " 7,75% = " + df00.format(skladkaZdrowotna2));
 			kwotaZmiejsz = 0;
 			kosztyUzyskania = (oPodstawa * 20) / 100;
 			System.out.println("Koszty uzyskania przychodu (stałe) "
@@ -117,8 +121,8 @@ public class TaxCalculator {
 			System.out.println("Zaliczka do urzędu skarbowego = "
 					+ df00.format(zaliczkaUS) + " po zaokrągleniu = "
 					+ df.format(zaliczkaUS0));
-			double wynagrodzenie = podstawa
-					- ((s_emerytalna + s_rentowa + u_chorobowe) + s_zdrow1 + zaliczkaUS0);
+			double wynagrodzenie = workParms.getPodstawa().doubleValue()
+					- ((skladkaEmerytalna + skladkaRentowa + ubezpieczenieChorobowe) + skladkaZdrowotna1 + zaliczkaUS0);
 			System.out.println();
 			System.out
 					.println("Pracownik otrzyma wynagrodzenie netto w wysokości = "
@@ -128,8 +132,20 @@ public class TaxCalculator {
 		}
 	}
 
+	public static void ustawParametry(double podstawa, char umowa) {
+		workParms.setPodstawa(podstawa);
+		switch (umowa) {
+			case 'P':
+				workParms.setTypUmowy(ContractType.UMOWA_O_PRACE);
+				break;
+			case 'U':
+				workParms.setTypUmowy(ContractType.UMOWA_ZLECENIE);
+				break;
+		}
+	}
+
 	public static void obliczZaliczke() {
-		zaliczkaUS = zaliczkaNaPod - s_zdrow2 - kwotaZmiejsz;
+		zaliczkaUS = zaliczkaNaPod - skladkaZdrowotna2 - kwotaZmiejsz;
 	}
 
 	public static void obliczPodatek(double podstawa) {
@@ -137,14 +153,14 @@ public class TaxCalculator {
 	}
 
 	public static double obliczonaPodstawa(double podstawa) {
-		s_emerytalna = (podstawa * 9.76) / 100;
-		s_rentowa = (podstawa * 1.5) / 100;
-		u_chorobowe = (podstawa * 2.45) / 100;
-		return (podstawa - s_emerytalna - s_rentowa - u_chorobowe);
+		skladkaEmerytalna = (podstawa * 9.76) / 100;
+		skladkaRentowa = (podstawa * 1.5) / 100;
+		ubezpieczenieChorobowe = (podstawa * 2.45) / 100;
+		return (podstawa - skladkaEmerytalna - skladkaRentowa - ubezpieczenieChorobowe);
 	}
 
 	public static void obliczUbezpieczenia(double podstawa) {
-		s_zdrow1 = (podstawa * 9) / 100;
-		s_zdrow2 = (podstawa * 7.75) / 100;
+		skladkaZdrowotna1 = (podstawa * 9) / 100;
+		skladkaZdrowotna2 = (podstawa * 7.75) / 100;
 	}
 }
