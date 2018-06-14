@@ -4,40 +4,37 @@ import java.math.BigDecimal;
 
 public class WorkParms {
     private BigDecimal Podstawa;
-    private ContractType TypUmowy;
 
     private double ProcentSkladkaEmerytura = 9.76;
     private double ProcentSkladkaRenta = 1.5;
     private double ProcentSkladkaZdrowotne = 2.45;
+    private double kosztyUzyskania;
+    private double kwotaZmiejsz;
 
     public WorkParms() {
         Podstawa = new BigDecimal(0);
-        TypUmowy = ContractType.UMOWA_O_PRACE;
     }
 
-    public WorkParms(String podstawa, ContractType typUmowy) {
+    public WorkParms(String podstawa) {
         Podstawa = new BigDecimal(podstawa);
-        TypUmowy = typUmowy;
     }
 
-    public WorkParms(double podstawa, ContractType typUmowy) {
+    public WorkParms(double podstawa) {
         Podstawa = new BigDecimal(podstawa);
-        TypUmowy = typUmowy;
     }
 
 
-    public WorkParms(BigDecimal podstawa, ContractType typUmowy) {
+    public WorkParms(BigDecimal podstawa) {
         Podstawa = podstawa;
-        TypUmowy = typUmowy;
     }
 
-
-    public WorkParms(BigDecimal podstawa, ContractType typUmowy, double procentSkladkaEmerytura, double procentSkladkaRenta, double procentSkladkaZdrowotne) {
+    public WorkParms(BigDecimal podstawa, double procentSkladkaEmerytura, double procentSkladkaRenta, double procentSkladkaZdrowotne, double kosztyUzyskania, double kwotaZmiejsz) {
         Podstawa = podstawa;
-        TypUmowy = typUmowy;
         ProcentSkladkaEmerytura = procentSkladkaEmerytura;
         ProcentSkladkaRenta = procentSkladkaRenta;
         ProcentSkladkaZdrowotne = procentSkladkaZdrowotne;
+        this.kosztyUzyskania = kosztyUzyskania;
+        this.kwotaZmiejsz = kwotaZmiejsz;
     }
 
 
@@ -57,15 +54,7 @@ public class WorkParms {
     public void setPodstawa(double podstawa) {
         Podstawa = new BigDecimal(podstawa);
     }
-    
 
-    public ContractType getTypUmowy() {
-        return TypUmowy;
-    }
-
-    public void setTypUmowy(ContractType typUmowy) {
-        TypUmowy = typUmowy;
-    }
 
     public double getProcentSkladkaEmerytura() {
         return ProcentSkladkaEmerytura;
@@ -89,5 +78,21 @@ public class WorkParms {
 
     public void setProcentSkladkaZdrowotne(double procentSkladkaZdrowotne) {
         ProcentSkladkaZdrowotne = procentSkladkaZdrowotne;
+    }
+
+    public double getKosztyUzyskania() {
+        return kosztyUzyskania;
+    }
+
+    public void setKosztyUzyskania(double kosztyUzyskania) {
+        this.kosztyUzyskania = kosztyUzyskania;
+    }
+
+    public double getKwotaZmiejsz() {
+        return kwotaZmiejsz;
+    }
+
+    public void setKwotaZmiejsz(double kwotaZmiejsz) {
+        this.kwotaZmiejsz = kwotaZmiejsz;
     }
 }
