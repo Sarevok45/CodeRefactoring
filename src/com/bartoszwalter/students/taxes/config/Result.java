@@ -153,20 +153,20 @@ public class Result {
     public String toString() {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
-        return "Result{" +
+        return
                 "Składka na ubezpieczenie emerytalne = " + formatter.format(skladkaEmerytalna) +
-                ", Składka na ubezpieczenie rentowe =" + formatter.format(skladkaRentowa) +
-                ", Składka na ubezpieczenie chorobowe =" + formatter.format(ubezpieczenieChorobowe) +
-                ", Podstawa wymiaru składki na ubezpieczenie zdrowotne =" + formatter.format(podstawaUbezpieczenieZdrowotne) +
-                ", Składka na ubezpieczenie zdrowotne: 9% =" + formatter.format(ubezpieczenieZdrowotne1) +
-                ", Składka na ubezpieczenie zdrowotne: 7.75% =" + formatter.format(ubezpieczenieZdrowotne2) +
-                ", Koszty uzyskania przychodu w stałej wysokości =" + formatter.format(kosztyUzyskania) +
-                ", Podstawa opodatkowania =" + formatter.format(podstawaOpodatkowana) +
-                ", Zaliczka na podatek dochodowy 18% =" + formatter.format(zaliczkaNaPodatekDochodowy) +
-                ", Kwota wolna od podatku =" + formatter.format(kwotaWolnaOdPodatku) +
-                ", Podatek potrącony =" + formatter.format(podatekPotracony) +
-                ", Zaliczka do urzędu skarbowego =" + formatter.format(zaliczkaDoUrzedu) +
-                ", Pracownik otrzyma wynagrodzenie netto w wysokości =" + formatter.format(wynagrodzenieNetto) +
-                '}';
+                "\n Składka na ubezpieczenie rentowe =" + formatter.format(skladkaRentowa) +
+                "\n Składka na ubezpieczenie chorobowe =" + formatter.format(ubezpieczenieChorobowe) +
+                "\n Podstawa wymiaru składki na ubezpieczenie zdrowotne =" + formatter.format(podstawaUbezpieczenieZdrowotne) +
+                "\n Składka na ubezpieczenie zdrowotne: 9% =" + formatter.format(ubezpieczenieZdrowotne1) +
+                "\n Składka na ubezpieczenie zdrowotne: 7.75% =" + formatter.format(ubezpieczenieZdrowotne2) +
+                "\n Koszty uzyskania przychodu w stałej wysokości =" + formatter.format(kosztyUzyskania) +
+                "\n Podstawa opodatkowania =" + formatter.format(podstawaOpodatkowana) +
+                "\n Zaliczka na podatek dochodowy 18% =" + formatter.format(zaliczkaNaPodatekDochodowy) +
+                "\n Kwota wolna od podatku =" + formatter.format(kwotaWolnaOdPodatku) +
+                "\n Podatek potrącony =" + formatter.format(podatekPotracony) +
+                "\n Zaliczka do urzędu skarbowego =" + formatter.format(zaliczkaDoUrzedu) +
+                "\n Pracownik otrzyma wynagrodzenie netto w wysokości =" + formatter.format(wynagrodzenieNetto) +
+                '\n';
     }
 }
